@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../store/store';
 const Signup = () => {
- 
+
+  
+ const navigate = useNavigate()
+ const {storetokenInLS} = useAuth()
   const [user,setuser] = useState({
     username:"",
     email:"",
@@ -25,7 +30,7 @@ const Signup = () => {
   const handleSubmit = async(e) => {
     e.preventDefault();
   try {
-    const responce = await fetch("http://localhost:3000/api/signup",{
+    const responce = await fetch("http://localhost:3000/api/user/signup",{
      method:"POST",
        headers:{
         'Content-Type':'application/json'
@@ -34,10 +39,18 @@ const Signup = () => {
     })
 
       const data = await responce.json()
-    console.log(data);
+    //console.log(data);
 
     if(responce.ok){
+      setuser({
+        username:"",
+        email:"",
+        password:""
+      })
+
+      storetokenInLS(data.token)
       alert("signup successfully")
+      navigate('/home')
     }
     else{
       alert("not signup successfully")
@@ -56,15 +69,15 @@ const Signup = () => {
         <h2 className="text-2xl font-bold text-center text-[#e9edef] mb-6">Sign Up</h2>
         <form onSubmit={handleSubmit}>
              <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-[#8696a0]">Email Address</label>
+            <label htmlFor="email" className="block text-sm font-medium text-[#8696a0]">Username</label>
             <input
-              type="name"
+              type="username"
               name="username"
-              id="email"
+              
               value={user.username}
               onChange={handleChange}
               className="w-full px-4 py-2 mt-2 border rounded-lg bg-[#2a3942] text-[#e9edef] placeholder-[#8696a0] focus:outline-none focus:ring-2 focus:ring-[#00a884] focus:border-transparent"
-              placeholder="Enter your email"
+              placeholder="Username"
               required
             />
           </div>
@@ -72,12 +85,12 @@ const Signup = () => {
             <label htmlFor="email" className="block text-sm font-medium text-[#8696a0]">Email Address</label>
             <input
               type="email"
-              id="email"
+              
               name='email'
               value={user.email}
               onChange={handleChange}
               className="w-full px-4 py-2 mt-2 border rounded-lg bg-[#2a3942] text-[#e9edef] placeholder-[#8696a0] focus:outline-none focus:ring-2 focus:ring-[#00a884] focus:border-transparent"
-              placeholder="Enter your email"
+              placeholder=" Email"
               required
             />
           </div>
@@ -85,18 +98,19 @@ const Signup = () => {
             <label htmlFor="password" className="block text-sm font-medium text-[#8696a0]">Password</label>
             <input
               type="password"
-              id="password"
+              name='password'
+              
               value={user.password}
                onChange={handleChange}
               className="w-full px-4 py-2 mt-2 border rounded-lg bg-[#2a3942] text-[#e9edef] placeholder-[#8696a0] focus:outline-none focus:ring-2 focus:ring-[#00a884] focus:border-transparent"
-              placeholder="Enter your password"
+              placeholder="Password"
               required
             />
           </div>
           
           <button
             type="submit"
-            className="w-full px-4 py-2 text-[#111b21] bg-[#00a884] rounded-lg hover:bg-[#02916b] focus:outline-none focus:ring-2 focus:ring-[#02c097] focus:ring-offset-2">
+            className="w-full px-4 py-2 text-[#111b21] bg-[#00a884] rounded-lg hover:bg-[#02916b] focus:outline-none focus:ring-2 focus:ring-[#02c097] focus:ring-offset-2 cursor-pointer">
             Sign Up
           </button>
         </form>

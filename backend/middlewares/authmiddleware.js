@@ -20,8 +20,6 @@ const token = req.header("Authorization");
          req.userid = userdata._id
          req.user = userdata
          req.token = token
-         
-         
          next()
          
       } catch (error) {

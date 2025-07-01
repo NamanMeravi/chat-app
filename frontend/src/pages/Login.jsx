@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom'
+import { useAuth } from '../store/store';
 const Login = () => {
+
+
+  const{storetokenInLS}=useAuth()
 
   const navigate = useNavigate()
 const [user,setuser] = useState({
@@ -35,7 +39,8 @@ const [user,setuser] = useState({
     })
 
     const data = await responce.json()
-    console.log(data);
+   
+    //console.log(data);
     
     if(responce.ok){
       setuser({
@@ -43,6 +48,7 @@ const [user,setuser] = useState({
         password:""
       })
       
+      storetokenInLS(data.token)
       alert("login successfully")
       navigate('/home')
 

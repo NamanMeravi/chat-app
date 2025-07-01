@@ -36,7 +36,8 @@ export const Registration = async (req, res) => {
     if (newuser) {
       return res.status(201).json({
         message: "registration successfully",
-        token: generateToken(username),
+        username,
+        token: generateToken(newuser),
         userid: newuser._id,
       });
     }
@@ -67,6 +68,7 @@ export const Login = async (req, res) => {
 
     return res.status(201).json({
       message: "Login successfully",
+      username:user.username,
       token: generateToken(user),
       userid: user._id,
     });
@@ -147,3 +149,27 @@ export const getalluser = async(req,res)=>{
  }
 }
 
+
+
+//get loggedIn userdata to frontend
+
+export const userdata = async(req,res)=>{
+
+const userId = req.userid
+
+const loginuser = await User.findOne({
+  _id:userId
+})
+
+if(!loginuser){
+  return res.status(400),json({
+    message:"User not found"
+  })
+}
+
+return res.status(200).json({
+  message:"login user",
+   loginuser
+})
+
+}
