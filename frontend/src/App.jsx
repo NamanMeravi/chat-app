@@ -4,10 +4,11 @@ import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
 import Home from './pages/Home.jsx'
 import PageAuthnticate from './utils/PageAuthnticate.jsx'
+import './App.css'
 
  const App = () => {
    return (
-     <div>
+     <div className='App' >
 
      <Routes>
        
